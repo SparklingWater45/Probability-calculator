@@ -41,15 +41,24 @@ class Hat:
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-    #creates dictionary of drawn items
+   
+    #creates empty value dictionary of drawn items
     temp_dict = {}
-
-    
     for i in range(num_experiments):
         temp_arr = hat.draw(num_balls_drawn)
-        
-        
-        
+        for j in temp_arr:
+            temp_dict[j] = 0
+    
+    
+    for i in temp_arr:
+        pass
+
+
+    l = ["a","b","b"]
+    a = [[i,temp_arr.count(i)] for i in set(temp_arr)]
+
+    print(a)
+
 
 hat = Hat(blue=4, green=6, red=2)
 probability = experiment(
