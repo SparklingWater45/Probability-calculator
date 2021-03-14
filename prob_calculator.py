@@ -13,61 +13,61 @@ class Hat:
         for key,value in kwargs.items():
             self.balls_dict[key] = value
             self.total += value
-
-        # print(self.total)
     
         for key,value in self.balls_dict.items():
             for i in range((value)):
                 self.contents.append(key)
         
-        # print('original contents = ',self.contents)
-        
     def draw(self,num_ball):
-        #draws random balls from contents array
+
         if num_ball > len(self.contents):
             return self.contents
         else: 
             output_balls = []
-
             for i in range(0,num_ball):
                 rand_value = random.randint(0,len(self.contents)-1)
                 output_balls.append(self.contents[rand_value])
-                # self.contents.pop(rand_value)
-                # self.total += -1
+                self.contents.pop(rand_value)
         
-            # print('new contents ',self.contents)
-            # print('output = ',output_balls)
-            return output_balls
+        return output_balls
 
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
    
     #creates empty value dictionary of drawn items
-    temp_dict = {}
+    arr_drawn = []
+    total = 0
+    dict_drawn = {}
+ 
     for i in range(num_experiments):
-        temp_arr = hat.draw(num_balls_drawn)
-        for j in temp_arr:
-            temp_dict[j] = 0
+        
+        #make copy of object , otherwise the self.contents will become 0
+        temp_hat = copy.deepcopy(hat)
+        arr_drawn = temp_hat.draw(num_balls_drawn)
+       
+        
+        #creates a key for all ball colours in hat
+        #sets all keys to 0, for each loop run
+        for i in hat.contents:
+            dict_drawn[i] = 0
+        
+        #changes the keys in the dict to the amount of colours drawn
+        for i in arr_drawn:
+            dict_drawn[i] +=1
+
+        temp_dict = {}
+        
+        for key in dict_drawn:
+            if key in list(expected_balls.keys()):
+                #if keys are equal then checks is correct
+                if dict_drawn[key] >= expected_balls[key]:
+                    temp_dict[key] = expected_balls[key]
+                    
+            #if created dictionary is the same as the expected
+            if temp_dict == expected_balls:
+                total +=1
+    #m/n
+    return total/num_experiments
+
+
     
-    
-    for i in temp_arr:
-        pass
-
-
-    l = ["a","b","b"]
-    a = [[i,temp_arr.count(i)] for i in set(temp_arr)]
-
-    print(a)
-
-
-hat = Hat(blue=4, green=6, red=2)
-probability = experiment(
-    hat=hat,
-    expected_balls={"blue": 2,
-                    "red": 1,},
-    num_balls_drawn=4,
-    num_experiments=50)
-# print("Probability:", probability)
-
-# # Run unit tests automatically
-# main(module='test_module', exit=False)
